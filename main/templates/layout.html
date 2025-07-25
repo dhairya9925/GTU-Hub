@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% block title %}{% endblock title %}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#e86a33',     // warm energetic orange
+                        secondary: '#fbbf24',    // bold golden amber
+                        ternary: '#1c5858',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-orange-50 dark:bg-gray-900 transition-colors duration-300">
+    {% block header %}
+        <nav class="bg-gradient-to-r from-primary to-orange-600 dark:from-gray-800 dark:to-orange-900 text-white shadow-lg fixed top-0 left-0 right-0 z-50">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0">
+                            <h1 class="text-xl font-bold">Gujarat Technical Institute</h1>
+                        </div>
+                    </div>
+                    <div class="hidden lg:block">
+                        <div class="ml-10 flex items-center justify-between w-full">
+                            <!-- Navigation Links -->
+                            <div class="flex space-x-1">
+                                <a href="/" class="hover:bg-orange-700 dark:hover:bg-orange-900 hover:text-white px-4 py-2 rounded-md font-medium transition duration-300">Home</a>
+                                <a href="/courses" class="hover:bg-orange-700 dark:hover:bg-orange-900 hover:text-white px-4 py-2 rounded-md font-medium transition duration-300">Courses</a>
+                                <a href="/circular" class="hover:bg-orange-700 dark:hover:bg-orange-900 hover:text-white px-4 py-2 rounded-md font-medium transition duration-300">Circular</a>
+                                <a href="/papers" class="hover:bg-orange-700 dark:hover:bg-orange-900 hover:text-white px-4 py-2 rounded-md font-medium transition duration-300">Question Papers</a>
+                                <a href="/result" class="hover:bg-orange-700 dark:hover:bg-orange-900 hover:text-white px-4 py-2 rounded-md font-medium transition duration-300">Results</a>
+                                <a href="/timetable" class="hover:bg-orange-700 dark:hover:bg-orange-900 hover:text-white px-4 py-2 rounded-md font-medium transition duration-300">Exam Timetable</a>
+                                <a href="/contact" class="hover:bg-orange-700 dark:hover:bg-orange-900 hover:text-white px-4 py-2 rounded-md font-medium transition duration-300">Contact</a>
+                            </div>
+                            <!-- Theme Toggle Button -->
+                            <div class="flex items-center">
+                                <button id="theme-toggle" class="p-2 rounded-md hover:bg-orange-700 dark:hover:bg-orange-900 transition duration-200 flex items-center justify-center">
+                                    <svg id="sun-icon" class="w-6 h-6 text-white hidden" viewBox="0 0 20 20">
+                                        <path fill="white" fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                                    </svg>
+                                    <svg id="moon-icon" class="w-6 h-6 text-white" viewBox="0 0 20 20">
+                                        <path fill="white" d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Mobile Buttons -->
+                    <div class="lg:hidden flex items-center">
+                        <button id="theme-toggle-mobile" class="mr-2 p-2 rounded-md hover:bg-orange-700 dark:hover:bg-orange-900 transition duration-300">
+                            <svg id="sun-icon-mobile" class="w-5 h-5 hidden" viewBox="0 0 20 20">
+                                <path fill="white" fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path>
+                            </svg>
+                            <svg id="moon-icon-mobile" class="w-5 h-5" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="white" d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                            </svg>
+                        </button>
+                        <button id="mobile-menu-button" class="text-white hover:text-orange-200 focus:outline-none">
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Mobile Menu -->
+            <div id="mobile-menu" class="lg:hidden hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-orange-800 dark:bg-orange-900">
+                    <a href="index" class="bg-orange-700 dark:bg-orange-800 block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                    <a href="/courses" class="hover:bg-orange-700 dark:hover:bg-orange-800 block px-3 py-2 rounded-md text-base font-medium">Courses</a>
+                    <a href="/circular" class="hover:bg-orange-700 dark:hover:bg-orange-800 block px-3 py-2 rounded-md text-base font-medium">Circular</a>
+                    <a href="/papers" class="hover:bg-orange-700 dark:hover:bg-orange-800 block px-3 py-2 rounded-md text-base font-medium">Question Papers</a>
+                    <a href="/result" class="hover:bg-orange-700 dark:hover:bg-orange-800 block px-3 py-2 rounded-md text-base font-medium">Results</a>
+                    <a href="/timetable" class="hover:bg-orange-700 dark:hover:bg-orange-800 block px-3 py-2 rounded-md text-base font-medium">Exam Timetable</a>
+                    <a href="/contact" class="hover:bg-orange-700 dark:hover:bg-orange-800 block px-3 py-2 rounded-md text-base font-medium">Contact</a>
+                </div>
+            </div>
+        </nav>
+    {% endblock %}
+
+    {% block content %}{% endblock content %}
+
+    {% block footer %}
+
+<footer class="text-orange-200 py-14 mt-4">
+    <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <!-- Branding -->
+        <div>
+            <h3 class="text-xl font-bold text-white mb-2">Gujarat Technical Institute</h3>
+            <p class="text-sm leading-relaxed text-orange-300">
+                A legacy of innovation and excellence in engineering education since 1985.
+            </p>
+        </div>
+
+        <!-- Quick Links -->
+        <div>
+            <h4 class="text-base font-semibold text-white mb-3">Quick Links</h4>
+            <ul class="space-y-2 text-sm">
+                <li>
+                    <a href="/" class="hover:text-white transition-colors duration-200">
+                        <i class="fas fa-home mr-2 text-orange-400"></i>Home
+                    </a>
+                </li>
+                <li>
+                    <a href="/courses" class="hover:text-white transition-colors duration-200">
+                        <i class="fas fa-book mr-2 text-orange-400"></i>Courses
+                    </a>
+                </li>
+                <li>
+                    <a href="/papers" class="hover:text-white transition-colors duration-200">
+                        <i class="fas fa-file-alt mr-2 text-orange-400"></i>Question Papers
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Contact Info -->
+        <div>
+            <h4 class="text-base font-semibold text-white mb-3">Contact Us</h4>
+            <p class="text-sm text-orange-300 leading-relaxed">
+                <i class="fas fa-envelope mr-2 text-orange-400"></i>info@gtu.ac.in<br />
+                <i class="fas fa-phone-alt mr-2 text-orange-400"></i>+91 12345 67890
+            </p>
+        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="mt-12 border-t border-gray-700 pt-4 text-center text-xs text-orange-400 tracking-wide">
+        &copy; 2024 Gujarat Technical Institute. All rights reserved.
+    </div>
+</footer>
+    {% endblock footer %}
+
+    <!-- JS Script remains unchanged -->
+     <script>
+        // Theme toggle functionality
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.className = theme;
+            updateThemeIcons(theme);
+        }
+
+        function updateThemeIcons(theme) {
+            const sunIcons = document.querySelectorAll('#sun-icon, #sun-icon-mobile');
+            const moonIcons = document.querySelectorAll('#moon-icon, #moon-icon-mobile');
+            
+            if (theme === 'dark') {
+                sunIcons.forEach(icon => icon.classList.remove('hidden'));
+                moonIcons.forEach(icon => icon.classList.add('hidden'));
+            } else {
+                sunIcons.forEach(icon => icon.classList.add('hidden'));
+                moonIcons.forEach(icon => icon.classList.remove('hidden'));
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.className;
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.className = newTheme;
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+
+        // Initialize theme on page load
+        initTheme();
+
+        // Theme toggle event listeners
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme);
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Contact form submission
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            this.reset();
+        });
+    </script>
+</body>
+</html>

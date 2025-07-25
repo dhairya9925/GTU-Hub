@@ -1,0 +1,465 @@
+{% extends "layout.html" %}
+{% block content %}
+    <!-- Header Section -->
+    <section class="bg-gradient-to-r from-primary to-orange-400 dark:from-gray-800 dark:to-orange-900 text-white py-32 pb-48 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Question Papers</h1>
+            <p class="text-xl max-w-3xl mx-auto">Access previous year question papers to prepare for your examinations</p>
+        </div>
+    </section>
+
+    <!-- Search and Filter Section -->
+    <section class="absolute z-30 top-[45%] md:top-[40%] left-1/2 -translate-x-1/2 w-[90%] backdrop-blur-sm bg-orange-100/30 dark:bg-[#1f1b1a]/40 rounded-xl transition-colors duration-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="rounded-xl backdrop-blur-xs bg-orange-100/30 dark:bg-[#1f1b1a]/40 border border-orange-300/50 dark:border-orange-700/30 shadow-xl p-6">
+                <h2 class="text-2xl font-bold text-orange-600 dark:text-orange-400 mb-6">Search Question Papers</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-orange-800 dark:text-orange-300 mb-2">Course</label>
+                        <select id="course-filter" class="w-full px-3 py-2 border border-orange-300 dark:border-orange-700  focus:outline-none focus:border-orange-500 bg-white dark:bg-[#3a3129] text-gray-900 dark:text-white">
+                            <option value="">All Courses</option>
+                            <option value="Computer Science Engineering">Computer Science Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Electrical Engineering">Electrical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="AI & ML">AI & Machine Learning</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-orange-800 dark:text-orange-300 mb-2">Semester</label>
+                        <select id="semester-filter" class="w-full px-3 py-2 border border-orange-300 dark:border-orange-700  focus:outline-none focus:border-orange-500 bg-white dark:bg-[#3a3129] text-gray-900 dark:text-white">
+                            <option value="">All Semesters</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                            <option value="7">Semester 7</option>
+                            <option value="8">Semester 8</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-orange-800 dark:text-orange-300 mb-2">Subject</label>
+                        <!-- From Uiverse.io by antonypjohnson --> 
+                        <div class="relative">
+                            <input id="subject-search" placeholder="Search..." class="w-full px-3 py-2 border border-orange-300 dark:border-orange-700  focus:outline-none focus:border-orange-500 bg-white dark:bg-[#3a3129] text-gray-900 dark:text-white" id="floating_outlined" type="text" />
+                            <div class="absolute top-2 right-3">
+                                <a href="#" id="search-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" height="24" width="24" >
+                                        <path
+                                        d="M10.979 16.8991C11.0591 17.4633 10.6657 17.9926 10.0959 17.9994C8.52021 18.0183 6.96549 17.5712 5.63246 16.7026C4.00976 15.6452 2.82575 14.035 2.30018 12.1709C1.77461 10.3068 1.94315 8.31525 2.77453 6.56596C3.60592 4.81667 5.04368 3.42838 6.82101 2.65875C8.59833 1.88911 10.5945 1.79039 12.4391 2.3809C14.2837 2.97141 15.8514 4.21105 16.8514 5.86977C17.8513 7.52849 18.2155 9.49365 17.8764 11.4005C17.5979 12.967 16.8603 14.4068 15.7684 15.543C15.3736 15.9539 14.7184 15.8787 14.3617 15.4343C14.0051 14.9899 14.0846 14.3455 14.4606 13.9173C15.1719 13.1073 15.6538 12.1134 15.8448 11.0393C16.0964 9.62426 15.8261 8.166 15.0841 6.93513C14.3421 5.70426 13.1788 4.78438 11.81 4.34618C10.4412 3.90799 8.95988 3.98125 7.641 4.55236C6.32213 5.12348 5.25522 6.15367 4.63828 7.45174C4.02135 8.74982 3.89628 10.2276 4.28629 11.6109C4.67629 12.9942 5.55489 14.1891 6.75903 14.9737C7.67308 15.5693 8.72759 15.8979 9.80504 15.9333C10.3746 15.952 10.8989 16.3349 10.979 16.8991Z"
+                                        ></path>
+                                        <rect transform="rotate(-49.6812 12.2469 14.8859)" rx="1" height="10.1881" width="2" y="14.8859" x="12.2469" ></rect>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="flex items-end justify-end">
+                    <button id="clear-btn" class="filter-btn relative cursor-pointer py-2 px-4 text-center text-sm font-semibold uppercase text-orange-600 dark:text-white transition-transform duration-300 ease-in-out group overflow-hidden bg-white/90 dark:bg-[#3d3d3d]">
+                        <span class="relative z-20">Clear Filters</span>
+                        <span class="absolute left-[-75%] top-0 h-full w-[50%] bg-white/20 rotate-12 z-10 blur-lg group-hover:left-[125%] transition-all duration-1000 ease-in-out"></span>
+                        <span class="absolute top-0 left-0 w-[7%] h-[30%] border-l border-t border-orange-600 drop-shadow-3xl"></span>
+                        <span class="absolute top-0 right-0 w-[7%] h-[30%] border-r border-t border-orange-600 drop-shadow-3xl group-hover:h-[70%] group-hover:w-[90%] transition-all duration-300"></span>
+                        <span class="absolute bottom-0 left-0 w-[7%] h-[30%] border-l border-b border-orange-600 drop-shadow-3xl group-hover:h-[70%] group-hover:w-[90%] transition-all duration-300"></span>
+                        <span class="absolute bottom-0 right-0 w-[7%] h-[30%] border-r border-b border-orange-600 drop-shadow-3xl"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="py-64 sm:py-64 lg:py-48 lg:pb-24 sm:pb-24 pb-24 bg-orange-100 dark:bg-[#1c1917] transition-colors duration-300">
+        <div class="w-full p-4 mx-auto px-4 pb-10 sm:px-6 lg:px-20">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-orange-700 dark:text-orange-300">Question Papers</h2>
+                <div id="results-count" class="text-orange-500 dark:text-orange-200"></div>
+            </div>
+
+            <div id="papers-grid" class="space-y-4">
+                <!-- Question paper cards go here -->
+            </div>
+
+            <div id="no-results" class="hidden text-center py-16">
+                <div class="text-orange-400 text-6xl mb-4">📄</div>
+                <h3 class="text-2xl font-bold text-orange-600 dark:text-orange-300 mb-2">No question papers found</h3>
+                <p class="text-orange-500 dark:text-orange-200">Try adjusting your search criteria</p>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+        // Theme toggle functionality
+        {% comment %} function initTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.className = theme;
+            updateThemeIcons(theme);
+        }
+
+        function updateThemeIcons(theme) {
+            const sunIcons = document.querySelectorAll('#sun-icon, #sun-icon-mobile');
+            const moonIcons = document.querySelectorAll('#moon-icon, #moon-icon-mobile');
+            
+            if (theme === 'dark') {
+                sunIcons.forEach(icon => icon.classList.remove('hidden'));
+                moonIcons.forEach(icon => icon.classList.add('hidden'));
+            } else {
+                sunIcons.forEach(icon => icon.classList.add('hidden'));
+                moonIcons.forEach(icon => icon.classList.remove('hidden'));
+            }
+        }
+
+        function toggleTheme() {
+            const currentTheme = document.documentElement.className;
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.className = newTheme;
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+
+        // Initialize theme on page load
+        initTheme();
+
+        // Theme toggle event listeners
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme); {% endcomment %}
+
+        // Question papers data
+        const questionPapers = [
+            {
+                id: 1,
+                course: "Computer Science Engineering",
+                subject: "Data Structures and Algorithms",
+                year: "2024",
+                semester: "3",
+                examType: "Mid-term",
+                duration: "3 hours",
+                marks: "100",
+                date: "March 2024"
+            },
+            {
+                id: 2,
+                course: "Computer Science Engineering",
+                subject: "Database Management Systems",
+                year: "2024",
+                semester: "4",
+                examType: "Final",
+                duration: "3 hours",
+                marks: "100",
+                date: "May 2024"
+            },
+            {
+                id: 3,
+                course: "Mechanical Engineering",
+                subject: "Thermodynamics",
+                year: "2023",
+                semester: "4",
+                examType: "Final",
+                duration: "3 hours",
+                marks: "100",
+                date: "December 2023"
+            },
+            {
+                id: 4,
+                course: "Electrical Engineering",
+                subject: "Circuit Analysis",
+                year: "2024",
+                semester: "2",
+                examType: "Mid-term",
+                duration: "2 hours",
+                marks: "50",
+                date: "March 2024"
+            },
+            {
+                id: 5,
+                course: "Information Technology",
+                subject: "Web Development",
+                year: "2023",
+                semester: "5",
+                examType: "Final",
+                duration: "3 hours",
+                marks: "100",
+                date: "December 2023"
+            },
+            {
+                id: 6,
+                course: "Computer Science Engineering",
+                subject: "Operating Systems",
+                year: "2023",
+                semester: "5",
+                examType: "Final",
+                duration: "3 hours",
+                marks: "100",
+                date: "December 2023"
+            },
+            {
+                id: 7,
+                course: "Mechanical Engineering",
+                subject: "Machine Design",
+                year: "2024",
+                semester: "6",
+                examType: "Mid-term",
+                duration: "3 hours",
+                marks: "100",
+                date: "March 2024"
+            },
+            {
+                id: 8,
+                course: "Civil Engineering",
+                subject: "Structural Engineering",
+                year: "2023",
+                semester: "6",
+                examType: "Final",
+                duration: "3 hours",
+                marks: "100",
+                date: "December 2023"
+            },
+            {
+                id: 9,
+                course: "AI & ML",
+                subject: "Machine Learning Fundamentals",
+                year: "2024",
+                semester: "4",
+                examType: "Final",
+                duration: "3 hours",
+                marks: "100",
+                date: "May 2024"
+            },
+            {
+                id: 10,
+                course: "Information Technology",
+                subject: "Network Security",
+                year: "2022",
+                semester: "7",
+                examType: "Final",
+                duration: "3 hours",
+                marks: "100",
+                date: "December 2022"
+            },
+            {
+                id: 11,
+                course: "Computer Science Engineering",
+                subject: "Software Engineering",
+                year: "2023",
+                semester: "6",
+                examType: "Mid-term",
+                duration: "2 hours",
+                marks: "50",
+                date: "October 2023"
+            },
+            {
+                id: 12,
+                course: "Electrical Engineering",
+                subject: "Power Systems",
+                year: "2022",
+                semester: "7",
+                examType: "Final",
+                duration: "3 hours",
+                marks: "100",
+                date: "December 2022"
+            },
+            {
+                id: 13,
+                course: "Mechanical Engineering",
+                subject: "Manufacturing Processes",
+                year: "2024",
+                semester: "5",
+                examType: "Mid-term",
+                duration: "3 hours",
+                marks: "100",
+                date: "March 2024"
+            },
+            {
+                id: 14,
+                course: "Civil Engineering",
+                subject: "Construction Management",
+                year: "2023",
+                semester: "8",
+                examType: "Final",
+                duration: "3 hours",
+                marks: "100",
+                date: "May 2023"
+            },
+            {
+                id: 15,
+                course: "AI & ML",
+                subject: "Deep Learning",
+                year: "2023",
+                semester: "7",
+                examType: "Final",
+                duration: "3 hours",
+                marks: "100",
+                date: "December 2023"
+            }
+        ];
+
+        let filteredPapers = [...questionPapers];
+
+        // DOM elements
+        const papersGrid = document.getElementById('papers-grid');
+        const noResults = document.getElementById('no-results');
+        const resultsCount = document.getElementById('results-count');
+        const courseFilter = document.getElementById('course-filter');
+        const semesterFilter = document.getElementById('semester-filter');
+        const subjectSearch = document.getElementById('subject-search');
+        const searchBtn = document.getElementById('search-btn');
+        const clearBtn = document.getElementById('clear-btn');
+        {% comment %} const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu'); {% endcomment %}
+
+        {% comment %} // Mobile menu toggle
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        }); {% endcomment %}
+
+        // Create question paper card HTML
+        function createPaperCard(paper) {
+            return `
+<div class="relative bg-white dark:bg-[#110f0d] shadow-md hover:shadow-lg transition duration-300 p-6">
+    <!-- Corner Borders -->
+    <div class="pointer-events-none absolute inset-0 z-10">
+        <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-orange-400 dark:border-orange-600"></div>
+        <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-orange-400 dark:border-orange-600"></div>
+        <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-orange-400 dark:border-orange-600"></div>
+        <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-orange-400 dark:border-orange-600"></div>
+    </div>
+
+    <div class="relative z-20 flex flex-col md:flex-row md:items-center md:justify-between">
+        <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="inline-block px-3 py-1 text-xs font-semibold text-white bg-orange-600">${paper.course}</span>
+                <span class="inline-block px-3 py-1 text-xs font-semibold text-white bg-orange-500">Sem ${paper.semester}</span>
+                <span class="inline-block px-3 py-1 text-xs font-semibold text-gray-800 bg-yellow-400">${paper.year}</span>
+            </div>
+            <h3 class="text-xl font-bold text-orange-800 dark:text-orange-300 mb-2">${paper.subject}</h3>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-orange-700 dark:text-orange-200">
+                <div>
+                    <span class="font-medium">Exam Type:</span>
+                    <div>${paper.examType}</div>
+                </div>
+                <div>
+                    <span class="font-medium">Duration:</span>
+                    <div>${paper.duration}</div>
+                </div>
+                <div>
+                    <span class="font-medium">Max Marks:</span>
+                    <div>${paper.marks}</div>
+                </div>
+                <div>
+                    <span class="font-medium">Date:</span>
+                    <div>${paper.date}</div>
+                </div>
+            </div>
+        </div>
+<!-- Warm Orange Theme Button Card (Light + Dark Mode) -->
+        <div class="flex flex-col w-44 p-1.5 gap-1 rounded-2xl bg-[#fff7ed] dark:bg-[#8c2d00] shadow-md transition-colors">
+            <a
+                class="bg-[#fdba74] dark:bg-[#cc5200] 
+                    hover:bg-[#fb923c] dark:hover:bg-[#e65c00]
+                    hover:scale-[1.05] hover:translate-y-[-5px]
+                    hover:rounded-[18px] hover:rounded-bl-none hover:rounded-br-none
+                    px-4 py-1.5 rounded-xl rounded-bl-md rounded-br-md
+                    text-sm font-medium text-[#5c2c00] dark:text-orange-100 hover:text-[#3b1d00] dark:hover:text-orange-200
+                    transition-all text-center cursor-pointer"
+            >
+                Download
+            </a>
+            <a
+                class="bg-[#fcd34d] dark:bg-[#d97706] 
+                    hover:bg-[#facc15] dark:hover:bg-[#f59e0b]
+                    hover:scale-[1.05] hover:translate-y-[5px]
+                    hover:rounded-[18px] hover:rounded-tl-none hover:rounded-tr-none
+                    px-4 py-1.5 rounded-xl rounded-tl-md rounded-tr-md
+                    text-sm font-medium text-[#5c2c00] dark:text-orange-100 hover:text-[#3b1d00] dark:hover:text-orange-200
+                    transition-all text-center cursor-pointer"
+            >
+                View Page
+            </a>
+        </div>
+    </div>
+</div>
+            `;
+        }
+
+        // Render question papers
+        function renderPapers(papersToRender) {
+            resultsCount.textContent = `${papersToRender.length} papers found`;
+            
+            if (papersToRender.length === 0) {
+                papersGrid.innerHTML = '';
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                papersGrid.innerHTML = papersToRender.map(createPaperCard).join('');
+            }
+        }
+
+        // Filter question papers
+        function filterPapers() {
+            const courseValue = courseFilter.value;
+            const semesterValue = semesterFilter.value;
+            const subjectValue = subjectSearch.value.toLowerCase();
+
+            filteredPapers = questionPapers.filter(paper => {
+                const matchesCourse = !courseValue || paper.course === courseValue;
+                const matchesYear = !yearValue || paper.year === yearValue;
+                const matchesSemester = !semesterValue || paper.semester === semesterValue;
+                const matchesSubject = !subjectValue || paper.subject.toLowerCase().includes(subjectValue);
+                
+                return matchesCourse && matchesYear && matchesSemester && matchesSubject;
+            });
+
+            renderPapers(filteredPapers);
+        }
+
+        // Clear all filters
+        function clearFilters() {
+            courseFilter.value = '';
+            semesterFilter.value = '';
+            subjectSearch.value = '';
+            filteredPapers = [...questionPapers];
+            renderPapers(filteredPapers);
+        }
+
+        // View paper function
+        function viewPaper(paperId) {
+            const paper = questionPapers.find(p => p.id === paperId);
+            alert(`Viewing: ${paper.subject}\n\nCourse: ${paper.course}\nSemester: ${paper.semester}\nYear: ${paper.year}\nExam Type: ${paper.examType}\nDuration: ${paper.duration}\nMax Marks: ${paper.marks}\n\nThis would open the question paper in a new window.`);
+        }
+
+        // Download paper function
+        function downloadPaper(paperId) {
+            const paper = questionPapers.find(p => p.id === paperId);
+            alert(`Downloading: ${paper.subject}\n\nCourse: ${paper.course}\nSemester: ${paper.semester}\nYear: ${paper.year}\n\nDownload would start automatically in a real application.`);
+        }
+
+        // Event listeners
+        searchBtn.addEventListener('click', filterPapers);
+        clearBtn.addEventListener('click', clearFilters);
+        courseFilter.addEventListener('change', filterPapers);
+        semesterFilter.addEventListener('change', filterPapers);
+        subjectSearch.addEventListener('input', filterPapers);
+
+        // Enter key support for subject search
+        subjectSearch.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                filterPapers();
+            }
+        });
+
+        // Initial render
+        renderPapers(questionPapers);
+
+        // Make functions globally available
+        window.viewPaper = viewPaper;
+        window.downloadPaper = downloadPaper;
+    </script>
+{% endblock content %}

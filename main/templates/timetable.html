@@ -1,0 +1,243 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <section class="bg-gradient-to-r from-primary to-orange-400 dark:from-gray-800 dark:to-orange-900 text-white py-32 pb-48 md:py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center mt-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Exam Timetables</h1>
+            <p class="text-xl max-w-3xl mx-auto">Find the latest examination schedules and timetables</p>
+        </div>
+    </section>
+    <section class="absolute z-30 top-[45%] md:top-[40%] left-1/2 -translate-x-1/2 w-[90%] backdrop-blur-sm bg-orange-100/30 dark:bg-[#1f1b1a]/40 rounded-xl transition-colors duration-300">
+        <div class="max-w-7xl mx-auto">
+            <div class="rounded-xl backdrop-blur-xs bg-orange-100/30 dark:bg-[#1f1b1a]/40 border border-orange-300/50 dark:border-orange-700/30 shadow-xl p-6">
+                <h2 class="text-2xl font-bold text-orange-600 dark:text-orange-400 mb-6">Filter Timetables</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                    <div>
+                        <label class="block text-sm font-medium text-orange-800 dark:text-orange-300 mb-2">Department</label>
+                        <select id="department-filter"
+                            class="w-full px-3 py-2 border border-orange-300 dark:border-orange-700 focus:outline-none focus:border-orange-500 bg-white dark:bg-[#3a3129] text-gray-900 dark:text-white">
+                            <option value="">All Departments</option>
+                            <option value="Computer Engineering">Computer Engineering</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Electrical Engineering">Electrical Engineering</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-orange-800 dark:text-orange-300 mb-2">Year</label>
+                        <select id="year-filter"
+                            class="w-full px-3 py-2 border border-orange-300 dark:border-orange-700 focus:outline-none focus:border-orange-500 bg-white dark:bg-[#3a3129] text-gray-900 dark:text-white">
+                            <option value="">All Years</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-orange-800 dark:text-orange-300 mb-2">Exam Type</label>
+                        <input type="text" id="title-search" placeholder="E.g., Mid-Term"
+                            class="w-full px-3 py-2 border border-orange-300 dark:border-orange-700 focus:outline-none focus:border-orange-500 bg-white dark:bg-[#3a3129] text-gray-900 dark:text-white">
+                    </div>
+                </div>
+                <div class="flex items-end justify-end">
+                    <button id="clear-btn" class="filter-btn relative cursor-pointer py-2 px-4 text-center text-sm font-semibold uppercase text-orange-600 dark:text-white transition-transform duration-300 ease-in-out group overflow-hidden bg-white/90 dark:bg-[#3d3d3d]">
+                        <span class="relative z-20">Clear Filters</span>
+                        <span class="absolute left-[-75%] top-0 h-full w-[50%] bg-white/20 rotate-12 z-10 blur-lg group-hover:left-[125%] transition-all duration-1000 ease-in-out"></span>
+                        <span class="absolute top-0 left-0 w-[7%] h-[30%] border-l border-t border-orange-600 drop-shadow-3xl"></span>
+                        <span class="absolute top-0 right-0 w-[7%] h-[30%] border-r border-t border-orange-600 drop-shadow-3xl group-hover:h-[70%] group-hover:w-[90%] transition-all duration-300"></span>
+                        <span class="absolute bottom-0 left-0 w-[7%] h-[30%] border-l border-b border-orange-600 drop-shadow-3xl group-hover:h-[70%] group-hover:w-[90%] transition-all duration-300"></span>
+                        <span class="absolute bottom-0 right-0 w-[7%] h-[30%] border-r border-b border-orange-600 drop-shadow-3xl"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-64 sm:py-64 lg:py-48 lg:pb-24 sm:pb-24 pb-24 bg-orange-100 dark:bg-[#1c1917] transition-colors duration-300">
+        <div class="w-full p-4 mx-auto px-4 pb-10 sm:px-6 lg:px-20">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-orange-700 dark:text-orange-300">Schedules</h2>
+                <div id="results-count" class="text-orange-500 dark:text-orange-200"></div>
+            </div>
+
+            <div id="timetables-grid" class="space-y-4">
+                <!-- Timetables will be inserted here -->
+            </div>
+
+            <div id="no-results" class="hidden text-center py-16">
+                <div class="text-orange-400 text-6xl mb-4">🗓️</div>
+                <h3 class="text-2xl font-bold text-orange-600 dark:text-orange-300 mb-2">No timetables found</h3>
+                <p class="text-orange-500 dark:text-orange-200">Try adjusting your search criteria</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        {% comment %} // Theme toggle functionality
+        function initTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.documentElement.className = theme;
+            updateThemeIcons(theme);
+        }
+
+        function updateThemeIcons(theme) {
+            const sunIcons = document.querySelectorAll('#sun-icon, #sun-icon-mobile');
+            const moonIcons = document.querySelectorAll('#moon-icon, #moon-icon-mobile');
+            
+            if (theme === 'dark') {
+                sunIcons.forEach(icon => icon.classList.remove('hidden'));
+                moonIcons.forEach(icon => icon.classList.add('hidden'));
+            } else {
+                sunIcons.forEach(icon => icon.classList.add('hidden'));
+                moonIcons.forEach(icon => icon.classList.remove('hidden'));
+            }
+        }
+
+        function toggleTheme() {
+            const newTheme = document.documentElement.className === 'dark' ? 'light' : 'dark';
+            document.documentElement.className = newTheme;
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        }
+
+        initTheme();
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        document.getElementById('theme-toggle-mobile').addEventListener('click', toggleTheme);
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        }); {% endcomment %}
+
+        // Dummy timetables data
+        const timetablesData = [
+            { id: 1, department: "Computer Engineering", year: "2024", date: "01 Aug 2024", title: "Final Exam Timetable (Sem 3, 5, 7)", type: "Final", description: "Detailed timetable for the final theory examinations for odd semesters." },
+            { id: 2, department: "Mechanical Engineering", year: "2024", date: "25 Jul 2024", title: "Mid-Term Exam Schedule (Sem 3)", type: "Mid-Term", description: "Schedule for the upcoming mid-term examinations for the third semester." },
+            { id: 3, department: "Electrical Engineering", year: "2023", date: "10 Dec 2023", title: "Practical Exam Schedule (Sem 5)", type: "Practical", description: "Timetable for the final practical and viva voce examinations." },
+            { id: 4, department: "Computer Engineering", year: "2024", date: "28 Jul 2024", title: "Mid-Term Exam Schedule (Sem 5)", type: "Mid-Term", description: "Mid-term examination schedule for all subjects of the fifth semester." },
+        ];
+
+        let filteredTimetables = [...timetablesData];
+
+        // DOM elements
+        const timetablesGrid = document.getElementById('timetables-grid');
+        const noResults = document.getElementById('no-results');
+        const resultsCount = document.getElementById('results-count');
+        const departmentFilter = document.getElementById('department-filter');
+        const yearFilter = document.getElementById('year-filter');
+        const titleSearch = document.getElementById('title-search');
+        const clearBtn = document.getElementById('clear-btn');
+
+        // Create timetable card HTML
+        function createTimetableCard(timetable) {
+            return `
+<div class="relative bg-white dark:bg-[#110f0d]  shadow-md hover:shadow-lg transition duration-300 p-6">
+    
+    <!-- Corner Borders -->
+    <div class="pointer-events-none absolute inset-0 z-10">
+        <div class="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-orange-400 dark:border-orange-600 "></div>
+        <div class="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-orange-400 dark:border-orange-600 "></div>
+        <div class="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-orange-400 dark:border-orange-600 "></div>
+        <div class="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-orange-400 dark:border-orange-600 "></div>
+    </div>
+
+    <div class="relative z-20 flex flex-col md:flex-row md:items-center md:justify-between">
+        <div class="flex-1">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="inline-block px-3 py-1 text-xs font-semibold text-white bg-orange-600 rounded-full">${timetable.department}</span>
+                <span class="inline-block px-3 py-1 text-xs font-semibold text-white bg-orange-500 rounded-full">${timetable.year}</span>
+                <span class="inline-block px-3 py-1 text-xs font-semibold text-gray-800 bg-yellow-400 rounded-full">${timetable.date}</span>
+            </div>
+            <h3 class="text-xl font-bold text-orange-800 dark:text-orange-300 mb-2">${timetable.title}</h3>
+            <p class="text-sm text-orange-700 dark:text-orange-200 mb-1">
+                <span class="font-medium">Exam Type:</span> ${timetable.type}
+            </p>
+            <p class="text-sm text-orange-600 dark:text-orange-300 mb-4">${timetable.description}</p>
+        </div>
+        <!-- Warm Orange Theme Button Card (Light + Dark Mode) -->
+        <div class="flex flex-col w-44 p-1.5 gap-1 rounded-2xl bg-[#fff7ed] dark:bg-[#8c2d00] shadow-md transition-colors">
+            <a
+                class="bg-[#fdba74] dark:bg-[#cc5200] 
+                    hover:bg-[#fb923c] dark:hover:bg-[#e65c00]
+                    hover:scale-[1.05] hover:translate-y-[-5px]
+                    hover:rounded-[18px] hover:rounded-bl-none hover:rounded-br-none
+                    px-4 py-1.5 rounded-xl rounded-bl-md rounded-br-md
+                    text-sm font-medium text-[#5c2c00] dark:text-orange-100 hover:text-[#3b1d00] dark:hover:text-orange-200
+                    transition-all text-center cursor-pointer"
+            >
+                Download
+            </a>
+            <a
+                class="bg-[#fcd34d] dark:bg-[#d97706] 
+                    hover:bg-[#facc15] dark:hover:bg-[#f59e0b]
+                    hover:scale-[1.05] hover:translate-y-[5px]
+                    hover:rounded-[18px] hover:rounded-tl-none hover:rounded-tr-none
+                    px-4 py-1.5 rounded-xl rounded-tl-md rounded-tr-md
+                    text-sm font-medium text-[#5c2c00] dark:text-orange-100 hover:text-[#3b1d00] dark:hover:text-orange-200
+                    transition-all text-center cursor-pointer"
+            >
+                View Page
+            </a>
+        </div>
+    </div>
+</div>
+            `;
+        }
+
+        // Render timetables
+        function renderTimetables(timetablesToRender) {
+            resultsCount.textContent = `${timetablesToRender.length} schedules found`;
+            if (timetablesToRender.length === 0) {
+                timetablesGrid.innerHTML = '';
+                noResults.classList.remove('hidden');
+            } else {
+                noResults.classList.add('hidden');
+                timetablesGrid.innerHTML = timetablesToRender.map(createTimetableCard).join('');
+            }
+        }
+
+        // Filter timetables
+        function filterTimetables() {
+            const departmentValue = departmentFilter.value;
+            const yearValue = yearFilter.value;
+            const titleValue = titleSearch.value.toLowerCase();
+
+            filteredTimetables = timetablesData.filter(tt => {
+                const matchesDept = !departmentValue || tt.department === departmentValue;
+                const matchesYear = !yearValue || tt.year === yearValue;
+                const matchesType = !titleValue || tt.type.toLowerCase().includes(titleValue);
+                return matchesDept && matchesYear && matchesType;
+            });
+
+            renderTimetables(filteredTimetables);
+        }
+
+        // Clear filters
+        function clearFilters() {
+            departmentFilter.value = '';
+            yearFilter.value = '';
+            titleSearch.value = '';
+            filteredTimetables = [...timetablesData];
+            renderTimetables(filteredTimetables);
+        }
+
+        // Dummy view/download functions
+        function viewTimetable(id) { alert(`Viewing timetable ID: ${id}. This would open the schedule PDF.`); }
+        function downloadTimetable(id) { alert(`Downloading timetable ID: ${id}. Download would start shortly.`); }
+        
+        // Event listeners
+        departmentFilter.addEventListener('change', filterTimetables);
+        yearFilter.addEventListener('change', filterTimetables);
+        titleSearch.addEventListener('input', filterTimetables);
+        clearBtn.addEventListener('click', clearFilters);
+
+        // Initial render
+        renderTimetables(timetablesData);
+        
+        // Make functions globally available
+        window.viewTimetable = viewTimetable;
+        window.downloadTimetable = downloadTimetable;
+    </script>
+
+{% endblock content %}
